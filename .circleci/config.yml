@@ -3,6 +3,27 @@ version: 2.1
 orbs: 
   slack: circleci/slack@4.10.1
 commands:
+  revert-migrations:
+    description: Revert the last migration
+    parameters:
+        workflow_id:
+            type: string      
+    steps:
+        - run:
+            name: Revert migrations
+            when: on_fail
+            command: |
+                # Your Memstash or kvdb.io GET URL code goes here
+                # Example: Memstash.io
+                # Example: kvdb.io
+                SUCCESS=$(curl --insecure  https://kvdb.io/JBatMEU1HHtfKNevgH6ypU/migration_<< parameters.workflow_id >>)
+                # Logic for reverting the database state
+                if (( $SUCCESS == 1 ));
+                then
+                    cd ~/project/backend
+                    npm install
+                    npm run migration:revert
+                fi  
   destroy_environment:
     steps:
       - run:
@@ -187,6 +208,12 @@ jobs:
               # If you are using kvdb.io, generate the bucket ID "JBatMEU1HHtfKNevgH6ypU" in your local terminal first
               curl https://kvdb.io/JBatMEU1HHtfKNevgH6ypU/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
+      - run: 
+          name: install aws cli
+          command: |
+            pt-get update && apt-get install -y python3 python3-pip python3-setuptools groff less && pip3 install --upgrade pip && apt-get clean
+            RUN pip3 --no-cache-dir install --upgrade awscli
+      - revert-migrations
       - destroy_environment
   deploy-frontend:
     docker:
