@@ -128,9 +128,6 @@ jobs:
             npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical
             #npm audit --audit-level=critical
-      - save_cache:
-          paths: [backend/node-try-modules]
-          key: backend-try-build
       - slack/notify:
           channel: C03NZHBJAGG
           event: fail
@@ -195,8 +192,6 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build] 
-      - restore_cache:
-          keys: [backend-try-build]
       - run:
           name: Run migrations
           command: |
