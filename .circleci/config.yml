@@ -197,7 +197,6 @@ jobs:
           command: |
             #as
             cd backend
-            npm cache clean
             npm install -g n
             n stable
             #npm audit fix --audit-level=critical
