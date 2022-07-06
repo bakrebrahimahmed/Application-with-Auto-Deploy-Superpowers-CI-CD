@@ -194,12 +194,8 @@ jobs:
           keys: [backend-build] 
       - run:
           name: Run migrations
+          working_directory: ./backend
           command: |
-            #as
-            cd backend
-            npm install
-            npm audit fix --audit-level=critical
-            npm audit fix --force --audit-level=critical
             npm run migrations > ~/migrations_dump.txt
       - run:
           name: Send migration results to memstash
