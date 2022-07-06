@@ -4,10 +4,7 @@ orbs:
   slack: circleci/slack@4.10.1
 commands:
   revert-migrations:
-    description: Revert the last migration
-    parameters:
-      workflow_id:
-        type: string      
+    description: Revert the last migration  
     steps:
       - run:
           name: Revert migrations
@@ -16,7 +13,7 @@ commands:
               # Your Memstash or kvdb.io GET URL code goes here
               # Example: Memstash.io
               # Example: kvdb.io
-              SUCCESS=$(curl --insecure  https://kvdb.io/JBatMEU1HHtfKNevgH6ypU/migration_<< parameters.workflow_id >>)
+              SUCCESS=$(curl --insecure  https://kvdb.io/JBatMEU1HHtfKNevgH6ypU/migration_${CIRCLE_WORKFLOW_ID:0:7})
               # Logic for reverting the database state
               if (( $SUCCESS == 1 ));
               then
