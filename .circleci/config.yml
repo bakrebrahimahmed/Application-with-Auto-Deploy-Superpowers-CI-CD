@@ -196,9 +196,18 @@ jobs:
           name: install aws cli
           command: |
             apt-get install curl -y
+      - run: 
+          name: install aws cli
+          command: |
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - run: 
+          name: install aws cli
+          command: |
             unzip awscliv2.zip
-            ./aws/install
+      - run: 
+          name: install aws cli
+          command: |
+            ./aws/install     
       - run:
           name: Run migrations
           command: |
