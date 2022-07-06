@@ -192,22 +192,33 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
-      - install_awscli
+      - restore_cache:
+          keys: [backend-build] 
+      - run: 
+          name: install aws cli
+          command: |
+            #test1
+            sudo apt-get update && sudo apt-get install -yy less
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install      
       - run:
           name: Run migrations
           command: |
             cd backend
-            npm install
+            npm install            
             npm run migrations > migrations_dump.txt
+
       - run:
-          name: Send migration status to kvdb.io
+          name: Send migration results to memstash
           command: |
-            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+            if grep -q "has been executed successfully." migrations_dump.txt
             then
-              curl -d '1' https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7} 
+              # If you are using kvdb.io, generate the bucket ID "JBatMEU1HHtfKNevgH6ypU" in your local terminal first
+              curl -d '1' https://kvdb.io/JBatMEU1HHtfKNevgH6ypU/migration_${CIRCLE_WORKFLOW_ID:0:7}  
             fi
-      - destroy-environment
-      - revert-migrations     
+      - revert-migrations
+      - destroy_environment
 
 
 
