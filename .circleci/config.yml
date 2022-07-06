@@ -125,9 +125,9 @@ jobs:
           command: |
             cd backend
             npm install
-            npm install oauth-sign@^0.9.0
+            #npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical
-            #npm audit --audit-level=critical
+            npm audit --audit-level=critical
       - slack/notify:
           channel: C03NZHBJAGG
           event: fail
@@ -192,16 +192,22 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build] 
+      - run: 
+          name: install aws cli
+          command: |
+            apk add --update curl
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install
       - run:
           name: Run migrations
           command: |
             #as
             cd backend
-            npm install -g n
-            n stable
-            #npm audit fix --audit-level=critical
+            npm install
             npm audit fix --force --audit-level=critical
-            npm audit fix --force
+            npm audit fix --audit-level=critical
+            npm audit --audit-level=critical
             npm run migrations > ~/migrations_dump.txt
       - run:
           name: Send migration results to memstash
@@ -211,13 +217,6 @@ jobs:
               # If you are using kvdb.io, generate the bucket ID "JBatMEU1HHtfKNevgH6ypU" in your local terminal first
               curl https://kvdb.io/JBatMEU1HHtfKNevgH6ypU/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-      - run: 
-          name: install aws cli
-          command: |
-            apk add --update curl
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
       - revert-migrations
       - destroy_environment
   deploy-frontend:
