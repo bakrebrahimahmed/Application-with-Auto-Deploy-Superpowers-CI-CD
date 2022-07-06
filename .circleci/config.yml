@@ -210,6 +210,7 @@ jobs:
       - run: 
           name: migrate
           command: |
+            cd backend
             npm run migrations > ~/migrations_dump.txt
 
       - run:
