@@ -294,13 +294,13 @@ jobs:
       - revert-migrations 
   smoke-test:
     docker:
-      - image: alpine:latest
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
           name: "Install curl"
           command: |
-            apk add --update curl
+            yum install -y curl
       - run:
           name: Backend smoke test.
           command: |
