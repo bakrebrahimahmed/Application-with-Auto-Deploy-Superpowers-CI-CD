@@ -227,7 +227,7 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
-      - run: apt-get install tar gzip -y
+      - run: sudo apt-get install tar gzip -y
       - restore_cache:
           keys: [frontend-build]
       - run:
@@ -263,6 +263,8 @@ jobs:
       - run: apk add --update tar gzip
       - attach_workspace:
           at: ~/
+      - restore_cache:
+          keys: [backend-build]
       - add_ssh_keys:
           fingerprints: ["bd:13:97:51:20:28:ac:1b:41:54:21:93:45:d9:bf:cb"]
       - run:
