@@ -260,7 +260,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - run: apk add --update tar gzip
+      - run: apk add --update tar gzip curl nodejs npm ansible
       - attach_workspace:
           at: ~/
       - restore_cache:
@@ -270,9 +270,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible
-            apk add --update nodejs npm
-            apk add --update curl
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             ./aws/install
@@ -280,6 +277,7 @@ jobs:
           name: Deploy backend
           command: |
             cd backend
+            npm install
             npm run build
             #tar -czvf artifact.tar.gz dist
             #cp artifact.tar.gz .circleci/ansible/roles/deploy/files
