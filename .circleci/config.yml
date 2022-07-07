@@ -380,8 +380,6 @@ jobs:
             else
               echo can't clean
             fi
-            
-
 
 workflows:
   my-workflow:
