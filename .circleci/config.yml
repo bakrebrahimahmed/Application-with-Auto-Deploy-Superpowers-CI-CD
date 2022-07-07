@@ -290,11 +290,11 @@ jobs:
             ansible-playbook -i ~/inventory deploy-backend.yml
       - destroy_environment   
 
-smoke-test:
+  smoke-test:
     docker:
       - image: alpine:latest
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: "Install curl"
           command: |
