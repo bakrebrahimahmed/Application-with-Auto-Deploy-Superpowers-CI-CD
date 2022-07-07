@@ -260,19 +260,16 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - run: apk add --update tar gzip curl nodejs npm ansible
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip curl nodejs npm ansible aws-cli
       - attach_workspace:
           at: ~/
       - restore_cache:
           keys: [backend-build]
       - add_ssh_keys:
           fingerprints: ["bd:13:97:51:20:28:ac:1b:41:54:21:93:45:d9:bf:cb"]
-      - run:
-          name: Install dependencies
-          command: |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
       - run:
           name: Deploy backend
           command: |
