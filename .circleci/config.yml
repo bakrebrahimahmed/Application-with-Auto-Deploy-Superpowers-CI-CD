@@ -286,6 +286,9 @@ jobs:
             # Zip the directory
             tar -czvf artifact.tar.gz backend
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files
+            export TYPEORM_MIGRATIONS_DIR=./migrations
+            export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
+            export TYPEORM_MIGRATIONS=./migrations/*.ts
             cd .circleci/ansible
             echo "Contents  of the inventory file is -------"
             cat ~/inventory
@@ -304,6 +307,9 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
+            export TYPEORM_MIGRATIONS_DIR=./migrations
+            export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
+            export TYPEORM_MIGRATIONS=./migrations/*.ts
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
