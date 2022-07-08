@@ -3,7 +3,9 @@
 
 repository URL[01]: https://github.com/bakrebrahimahmed/cdond-c3-projectstarter
 
-S3 Bucket URL[02]: http://udapeople-30a0f1f.s3-website-us-east-1.amazonaws.com
+S3 Bucket URL[02]: http://udapeople-f389c18.s3-website-us-east-1.amazonaws.com
+
+cloudfront URL: d28bkfe86ohg2d.cloudfront.net
 
 
 
