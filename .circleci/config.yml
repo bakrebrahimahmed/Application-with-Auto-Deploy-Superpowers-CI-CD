@@ -359,7 +359,6 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            #test
             yum install -y curl         
             export OLDWORKFLOWID=$(curl --insecure https://kvdb.io/JBatMEU1HHtfKNevgH6ypU/old_workflow_id-2)
             echo Old Workflow ID: $OLDWORKFLOWID 
